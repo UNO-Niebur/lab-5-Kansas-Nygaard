@@ -4,15 +4,27 @@ import random
 
 def inWord(letter, word):
     """Returns boolean if letter is anywhere in the given word"""
+    return letter.upper() in word.upper() #check if letter is in the word
 
-    return False
+    
 
 def inSpot(letter, word, spot):
     """Returns boolean response if letter is in the given spot in the word."""
-
-    return False
+    return letter.upper() == word[spot].upper() #check if letter is in the right spot
 
 def rateGuess(myGuess, word):
+    result = ""
+    myGuess = myGuess.upper()
+    word = word.upper()
+
+    for i in range(5):
+        if inSpot(myGuess[i], word, i):
+            result += myGuess[i].upper() # correct spot - captial letter
+        elif inWord(myGuess[i], word):
+            result += myGuess[i].lower() # correct letter, wrong spot - lowercase letter
+        else:
+            result += "*" #letter not in word
+    return result
     """Rates your guess and returns a word with the following features.
     - Capital letter if the letter is in the right spot
     - Lower case letter if the letter is in the word but in the wrong spot
@@ -28,6 +40,17 @@ def main():
     print(todayWord)
 
     #User should get 6 guesses to guess
+    
+    for i in range(6):
+        guess = input("Enter a 5-letter guess: ")
+
+        feedback = rateGuess(guess, todayWord)
+        print("Results: ", feedback)
+        if guess.lower() == todayWord:
+            print("Great job, you guessed it!")
+            break
+    else:
+        print("Out of guesses, better luck next time. Today's word was: ", todayWord)
 
     #Ask user for their guess
     #Give feedback using on their word:
